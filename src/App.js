@@ -1,25 +1,87 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState } from "react";
+import "./Style/GeneradorDocumentos.css";
+import "./Style/App.css";
+import cedula from "./Img/cedula.jpg";
+import Head from "./Component/Head";
+import Opciones from "./Component/Opciones";
+import Formulario from "./Component/Formulario";
+import { PoderSII } from "./Helper/PoderSII";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [img, setImg] = useState(cedula);
+	const [datos, setDatos] = useState({
+		nombre: "",
+		rut: "",
+		razon: "",
+		rutEmpresa: "",
+		fecha: "",
+		nacionalidad: "",
+	});
+	const [opcion, setOpcion] = useState("Poder SII");
+	const [alert, setAlert] = useState(false);
+
+	const HandlerClick = () => {
+		if (
+			datos.nombre.trim() === "" ||
+			datos.rut.trim() === "" ||
+			datos.razon.trim() === "" ||
+			datos.rutEmpresa.trim() === "" ||
+			datos.nacionalidad.trim() === "" ||
+			datos.fecha.trim() === ""
+		) {
+			setAlert(true);
+		} else {
+			setAlert(false);
+			if (opcion == "Poder SII" && img != cedula) {
+				PoderSII(datos, img);
+			} else {
+				setAlert(true);
+			}
+		}
+	};
+
+	const HandlerReset = () => {
+		setDatos({
+			nombre: "",
+			rut: "",
+			razon: "",
+			rutEmpresa: "",
+			fecha: "",
+			nacionalidad: "",
+		});
+		setImg(cedula);
+	};
+
+	const titulosHead = [
+		"Bienvenido al Generador de Documentos",
+		"Elige una opción, y genera tus documentos.",
+	];
+
+	return (
+		<Fragment>
+			<Head contenido={titulosHead} />
+			<Opciones opcion={opcion} setOpcion={setOpcion} />
+			<hr />
+			{alert ? (
+				<div className='callout alert text-center'>
+					Todos los Datos son Necesarios
+				</div>
+			) : null}
+			<Formulario img={img} setImg={setImg} datos={datos} setDatos={setDatos} />
+			<div className='row'>
+				<div className='small-5 medium-10 columns'>
+					<button className='button expanded' onClick={(e) => HandlerClick(e)}>
+						Generar {opcion}
+					</button>
+				</div>
+				<div className='small-5 medium-2 columns'>
+					<button className='alert button' onClick={(e) => HandlerReset(e)}>
+						Reset
+					</button>
+				</div>
+			</div>
+		</Fragment>
+	);
 }
 
 export default App;
