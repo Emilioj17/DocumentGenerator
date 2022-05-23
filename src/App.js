@@ -1,14 +1,14 @@
 import React, { Fragment, useState } from "react";
 import "./Style/GeneradorDocumentos.css";
 import "./Style/App.css";
-import Cedula from "./Img/cedula.jpg";
+import Cedula from "./Img/Cedula.jpg";
 import Head from "./Component/Head";
 import Opciones from "./Component/Opciones";
 import Formulario from "./Component/Formulario";
 import { PoderSII } from "./Helper/PoderSII";
 
 function App() {
-	const [img, setImg] = useState(cedula);
+	const [img, setImg] = useState(Cedula);
 	const [datos, setDatos] = useState({
 		nombre: "",
 		rut: "",
@@ -32,7 +32,7 @@ function App() {
 			setAlert(true);
 		} else {
 			setAlert(false);
-			if (opcion == "Poder SII" && img != cedula) {
+			if (opcion == "Poder SII" && img != Cedula) {
 				PoderSII(datos, img);
 			} else {
 				setAlert(true);
